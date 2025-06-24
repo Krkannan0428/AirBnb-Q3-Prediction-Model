@@ -1,4 +1,4 @@
-# 🏠 Airbnb Q3 Booking Prediction – K353 Project
+# 🏠 Airbnb Q3 Booking Prediction 
 
 This repository contains our predictive modeling solution for the **K353 Business Analytics Course Project (Spring 2025)** at Indiana University. The objective was to build a machine learning model that predicts the number of booking days (`NumReserveDays2016Q3`) for Airbnb properties in New York City during Q3 of 2016.
 
