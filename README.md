@@ -12,14 +12,12 @@ This repository contains our predictive modeling solution for the **K353 Busines
 - **Output**: A `.rdata` file containing predictions for unseen properties
 
 ---
-
 ## 🧾 Datasets Used
 
 All datasets were provided by the instructor and loaded via:
 
 ```r
 load(url("https://drive.google.com/uc?export=download&id=1mlJAYmo9TszSJsbYSWhhOY1a3fTJB_Ko"))
-
 property_info: Static property-level attributes
 
 listing_2016Q1 & listing_2016Q2: Daily listing activity
@@ -27,53 +25,47 @@ listing_2016Q1 & listing_2016Q2: Daily listing activity
 reserve_2016Q3_train: Actual Q3 booking data for training
 
 PropertyID_test: Properties to forecast
+```
 
-🔨 Methodology
-🧼 1. Data Cleaning
-Removed columns with >50% missing values
+## 🧼 Data Cleaning
 
-Merged datasets on PropertyID
+- Removed columns with >50% missing values  
+- Merged datasets on `PropertyID`  
+- Imputed missing numeric values using the median
 
-Imputed missing numeric values using the median
+---
 
-🧠 2. Feature Engineering
-Aggregated booking metrics from Q1 & Q2:
+## 🧠 Feature Engineering
 
-Booking counts, average price, and revenue
+- Aggregated booking metrics from Q1 & Q2:
+  - Booking counts, average price, total revenue  
+- Created date-based features:
+  - `PropAge`, `MonthListed`, `Quarter`, `DaysSinceQ2`, `Weekday`  
+- Constructed ratio features:
+  - `BedBathR`, `GuestRoomR`  
+- Encoded categorical variables using integer mapping
 
-Created date-based features:
+---
 
-PropAge, MonthListed, Quarter, DaysSinceQ2, etc.
+## ⚙️ Model Training
 
-Constructed ratio features:
+- **Model**: LightGBM (gradient boosting)
+- **Split**: 80/20 train/test on labeled data
+- **Tuning**:
+  - Learning rate = 0.03  
+  - Num leaves = 31  
+  - Subsampling = 90%
+- Used **early stopping** based on validation RMSE
 
-BedBathR, GuestRoomR
+---
 
-Encoded categorical variables numerically
+## 📈 Model Performance
 
-⚙️ 3. Model Training
-Model: LightGBM regression
+- **Validation RMSE**: ~4.2  
+- `pred` vector contains booking predictions for all properties in the test set (`PropertyID_test`)  
+- Predictions saved as:  
+  ```r
+  save(pred, file = "BPK.rdata")
 
-Train/test split: 80/20 on known booking data
-
-Tuned key parameters: learning rate, num leaves, subsampling
-
-Used early stopping based on validation RMSE
-
-📈 Model Performance
-Validation RMSE: ≈ 4.2
-
-Submission vector pred contains forecasts for all PropertyIDs in the test set
-
-💡 Reflection
-This project taught me the importance of:
-
-Leveraging time-based booking signals for accurate forecasting
-
-Feature construction from granular daily-level data
-
-Gradient boosting as a powerful model for structured data
-
-Practical R programming and efficient data manipulation
 
 
